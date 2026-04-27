@@ -139,23 +139,6 @@ void servo_update(servo_dev_t self)
     /* 更新逻辑 */
 }
 
-
-
-/**
- * @brief  舵机静态方法表
- * 
- *  所有舵机实例共用此方法表
- * 
- */
-static const servo_ops_t my_servo_ops = {
-    .init               = servo_init,
-    .deinit             = servo_deinit,
-    .start_stop         = servo_start_stop,
-    .set_target_angle   = servo_set_target_angle,
-    .get_current_angle  = servo_get_current_angle,
-    .update             = servo_update,
-};
-
 void servo_create(servo_dev_t *self)
 {
     if (NULL == self) {
@@ -171,7 +154,12 @@ void servo_create(servo_dev_t *self)
     dev->current_angle = 0;
     dev->is_started    = false;
     /* 绑定舵机方法 */
-    dev->servo_ops = &my_servo_ops;
+    dev->init               = servo_init;
+    dev->deinit             = servo_deinit;
+    dev->start_stop         = servo_start_stop;
+    dev->set_target_angle   = servo_set_target_angle;
+    dev->get_current_angle  = servo_get_current_angle;
+    dev->update             = servo_update;
 
     *self = dev;
 }

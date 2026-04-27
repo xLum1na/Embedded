@@ -44,9 +44,17 @@ typedef struct servo_config_t {
 } servo_config_t;
 
 /**
- * @brief 舵机类函数指针接口结构体
+ * @brief 舵机类
  */
-typedef struct servo_ops_t {
+typedef struct servo_dev_s {
+    /* 舵机参数封装 */
+    const servo_config_t  *servo_cfg; 
+    /* 运行状态封装 */
+    float           target_angle;   /* 目标角度 */
+    float           current_angle;  /* 当前角度 */
+    bool            is_started;     /* 运行状态 */
+    bool            is_inited;      /* 初始化状态 */
+    /* 函数指针模拟类方法 */
     /**
      * @brief 舵机初始化函数
      * 
@@ -109,24 +117,7 @@ typedef struct servo_ops_t {
      * @return NULL
      * 
      */
-    void (*update)(servo_dev_t self);
-
-} servo_ops_t;
-
-
-/**
- * @brief 舵机类
- */
-typedef struct servo_dev_s {
-    /* 舵机参数封装 */
-    const servo_config_t  *servo_cfg; 
-    /* 运行状态封装 */
-    float           target_angle;   /* 目标角度 */
-    float           current_angle;  /* 当前角度 */
-    bool            is_started;     /* 运行状态 */
-    bool            is_inited;      /* 初始化状态 */
-    /* 函数指针结构体模拟类方法 */
-    const servo_ops_t     *servo_ops;      
+    void (*update)(servo_dev_t self);  
 } servo_dev_s;
 
 
